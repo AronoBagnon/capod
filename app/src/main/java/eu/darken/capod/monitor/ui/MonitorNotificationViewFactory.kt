@@ -15,17 +15,20 @@ class MonitorNotificationViewFactory @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
-    fun createContentView(device: PodDevice): RemoteViews = when (device) {
-        is DualAirPods -> createDualApplePods(device)
+    fun createContentView(device: PodDevice, isBig: Boolean = false): RemoteViews = when (device) {
+        is DualAirPods -> createDualApplePods(device, isBig)
         is SingleApplePods -> createSingleApplePods(device)
         else -> createUnknownDevice(device)
     }
 
-    private fun createDualApplePods(device: DualAirPods): RemoteViews = RemoteViews(
+    private fun createDualApplePods(device: DualAirPods, isBig: Boolean = false): RemoteViews = RemoteViews(
         context.packageName,
         R.layout.monitor_notification_dual_pods_small
     ).apply {
         device.apply {
+            // Padding start
+            setViewVisibility(R.id.initial_padding, if (!isBig) View.VISIBLE else View.GONE)
+
             // Left
             setTextViewText(R.id.pod_left_label, getBatteryLevelLeftPod(context))
             setViewVisibility(R.id.pod_left_charging, if (isLeftPodCharging) View.VISIBLE else View.GONE)

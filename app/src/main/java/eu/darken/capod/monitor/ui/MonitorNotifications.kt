@@ -70,6 +70,7 @@ class MonitorNotifications @Inject constructor(
         return builder.apply {
             setStyle(NotificationCompat.DecoratedCustomViewStyle())
             setCustomContentView(notificationViewFactory.createContentView(device))
+            setCustomBigContentView(notificationViewFactory.createContentView(device, true))
             setSmallIcon(device.iconRes)
             setSubText(null)
             log(TAG, VERBOSE) { "updatingNotification(): $device" }
